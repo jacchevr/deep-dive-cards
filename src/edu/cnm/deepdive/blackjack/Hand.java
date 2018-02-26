@@ -2,7 +2,6 @@ package edu.cnm.deepdive.blackjack;
 
 import edu.cnm.deepdive.Card;
 import edu.cnm.deepdive.Rank;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,10 +9,12 @@ import java.util.Map;
 
 public class Hand implements Comparable<Hand>, Iterable<Card> {
 
+
   private static final int HIGH_ACE_INCREMENT = 10;
   private static final int WINNING_TOTAL = 21;
   private static final int BLACKJACK_NUM_CARDS = 2;
   private static Map<Rank, Integer> values;
+
   private List<Card> cards;
   private boolean bust;
   private boolean blackjack;
@@ -66,6 +67,10 @@ public class Hand implements Comparable<Hand>, Iterable<Card> {
     return value;
   }
 
+  public int size() {
+    return cards.size();
+  }
+
   private void update() {
     int aces = 0;
     value = 0;
@@ -80,7 +85,6 @@ public class Hand implements Comparable<Hand>, Iterable<Card> {
     for (int i = 0; i < aces; i++) {
       if (value + HIGH_ACE_INCREMENT <= WINNING_TOTAL) {
         value += HIGH_ACE_INCREMENT;
-        value += values.get(Rank.ACE);
       }
     }
     if (value > WINNING_TOTAL) {
@@ -91,24 +95,9 @@ public class Hand implements Comparable<Hand>, Iterable<Card> {
     }
   }
 
-//    if (!blackjack) {
-//      result = card1.getRank().compareTo(card2.getRank());
-//    } else if (card1.getRank() == Rank.ACE) {
-//      result = Math.abs(card1.getRank().compareTo(card2.getRank()));
-//    } else if (card2.getRank() == Rank.ACE) {
-//      result = -1;
-//    } else {
-//      result = card1.getRank().compareTo(card2.getRank());
-//    }
-//    if (bust) {
-//      result = -result;
-//    }
-//    return result;
-//    };
-
   @Override
   public int compareTo(Hand other) {
-    int result = Boolean.compare(isBlackjack(), other.isBlackjack());
+    int result = Boolean.compare((isBlackjack()), other.isBlackjack());
     if (result == 0) {
       result = Integer.compare(this.value(), other.value);
     }
@@ -117,6 +106,6 @@ public class Hand implements Comparable<Hand>, Iterable<Card> {
 
   @Override
   public Iterator<Card> iterator() {
-    return null;
+    return cards.iterator();
   }
 }
